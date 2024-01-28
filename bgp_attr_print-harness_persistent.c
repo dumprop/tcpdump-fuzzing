@@ -53,17 +53,17 @@ int main(int argc, char **argv) {
 
     while (__AFL_LOOP(UINT_MAX)) {  // increase if you have good stability
 
-    len = __AFL_FUZZ_TESTCASE_LEN;  // do not use the macro directly in a call!
+      len = __AFL_FUZZ_TESTCASE_LEN;  // do not use the macro directly in a call!
 
 
-    // generate atype value based on fuzzer's data
-    u_int atype_value = ((unsigned char)buf[0] << 24) | 
-              ((unsigned char)buf[1] << 16) | 
-              ((unsigned char)buf[2] << 8)  | 
-              ((unsigned char)buf[3]);
+      // generate atype value based on fuzzer's data
+      u_int atype_value = ((unsigned char)buf[0] << 24) | 
+                ((unsigned char)buf[1] << 16) | 
+                ((unsigned char)buf[2] << 8)  | 
+                ((unsigned char)buf[3]);
 
-    // fuzz function :)
-    bgp_attr_print(&ndo, atype_value, buf, len);
+      // fuzz function :)
+      bgp_attr_print(&ndo, atype_value, buf, len);
 
     }
 
