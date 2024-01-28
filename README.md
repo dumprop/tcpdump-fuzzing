@@ -53,12 +53,20 @@ afl-fuzz -i tests/ -o afl_out/ -t 1000 -- ./fuzzing_harness @@
 make
 ```
 
-Оценка покрытия по собранным сэмплам 
+Оценка покрытия по собранным сэмплам (передача в tcpdump)
 ``` bash
 for file in afl_out/default/queue/*; do
     ./tcpdump -r "$file"
 done
 ```
+
+Оценка покрытия по собранным сэмплам (передача в харнес)
+``` bash
+for file in afl_out/default/queue/*; do
+    ./fuzzing_harness "$file"
+done
+```
+INFO: для этого нужно использовать bgp_attr_print-harness.c при компиляции fuzzing_harness
 
 Генерация отчёта покрытия кода
 ``` bash
