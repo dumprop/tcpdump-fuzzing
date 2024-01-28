@@ -33,8 +33,14 @@ int main(int argc, char **argv) {
         perror("Unable to open file");
         return -1;
     }
-    fread(buffer, 1, sizeof(buffer), file);
+    size_t read_len = fread(buffer, 1, sizeof(buffer), file);
     fclose(file);
+
+    //we need 4 bytes for generating atype_value and at least 1 byte for buffer (data)
+    if (read_len < 5) {
+    printf("No enough data\n");
+    return -1;
+    }
 
     // generate atype value based on fuzzer's data
     u_int atype_value = ((unsigned char)buffer[0] << 24) | 
@@ -43,7 +49,7 @@ int main(int argc, char **argv) {
               ((unsigned char)buffer[3]);
 
     // fuzz function :)
-    int result = bgp_attr_print(&ndo, atype_value, buffer, sizeof(buffer));
+    int result = bgp_attr_print(ndo, atype_value, buffer+4, read_len-4);
 
     if (result > 0) {
         printf("Result: %d\n", result);

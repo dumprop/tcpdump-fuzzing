@@ -55,6 +55,11 @@ int main(int argc, char **argv) {
 
       len = __AFL_FUZZ_TESTCASE_LEN;  // do not use the macro directly in a call!
 
+      if (len < 5) {
+        printf("No enough data\n");
+        return -1;
+      }
+
 
       // generate atype value based on fuzzer's data
       u_int atype_value = ((unsigned char)buf[0] << 24) | 
@@ -63,7 +68,13 @@ int main(int argc, char **argv) {
                 ((unsigned char)buf[3]);
 
       // fuzz function :)
-      bgp_attr_print(&ndo, atype_value, buf, len);
+      int result = bgp_attr_print(ndo, atype_value, buf, len);
+
+      if (result > 0) {
+        printf("Result: %d\n", result);
+      } else {
+          printf("An error occurred: %d\n", result);
+      }
 
     }
 

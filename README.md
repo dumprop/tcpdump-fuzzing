@@ -7,6 +7,7 @@
 
 1. Производится сборка AFL++ (/afl/AFLplusplus-4.09c)
 2. Производится сборка tcpdump (/tcpdump)
+
 2.1 Производится сборка библиотеки libpcap (/tcpdump/tcpdump-tcpdump-4.9.1/libpcap) 
 
 
@@ -41,7 +42,7 @@ INFO: в файл fuzzing_harness.c нужно поместить текст и�
 
 Запускаем фаззинг:
 ``` bash
-afl-fuzz -i tests/ -o afl_out/ -t 1000 -- ./fuzzing_harness @@
+afl-fuzz -i tests/ -o afl_out/ -t 1000 -g 5 -- ./fuzzing_harness @@
 ```
 
 
@@ -66,7 +67,8 @@ for file in afl_out/default/queue/*; do
     ./fuzzing_harness "$file"
 done
 ```
-INFO: для этого нужно использовать bgp_attr_print-harness.c при компиляции fuzzing_harness
+INFO: для этого нужно использовать bgp_attr_print-harness.c при компиляции fuzzing_harness.
+Если использовался bgp_attr_print-harness_persistent.c, то в блоке for необходимо использовать перенаправние ввода: ./fuzzing_harness < "$file"
 
 Генерация отчёта покрытия кода
 ``` bash
