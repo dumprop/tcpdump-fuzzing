@@ -47,4 +47,4 @@ RUN ./configure
 RUN make
 
 # prepare folder for AFL++ results
-mkdir afl_out
+RUN mkdir afl_out
